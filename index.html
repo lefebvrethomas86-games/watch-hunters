@@ -42,19 +42,24 @@
   .ftoggle.open .fchevron { transform:rotate(180deg); }
   .fbody { overflow:hidden; max-height:0; transition:max-height .3s ease; }
   .fbody.open { max-height:1200px; padding-top:12px; }
-  .presets { background:#fff; border:1px solid var(--line); border-radius:10px; padding:10px; margin-bottom:12px; }
-  .phead { font-size:.72em; text-transform:uppercase; letter-spacing:.5px; color:var(--brass); margin-bottom:8px; }
+  .presets { background:#fff; border:1px solid var(--line); border-radius:10px; padding:4px 10px; margin-bottom:12px; }
+  .favtoggle { width:100%; display:flex; align-items:center; justify-content:space-between;
+    font-family:inherit; font-size:.82em; font-weight:700; letter-spacing:.4px; text-transform:uppercase;
+    color:var(--brass); background:none; border:none; cursor:pointer; padding:11px 2px; }
+  .favtoggle .lft { display:flex; align-items:center; gap:7px; }
+  .favstar { color:var(--gold); font-size:1.1em; }
+  .favchev { color:var(--brass); transition:transform .25s; }
+  .favtoggle.open .favchev { transform:rotate(180deg); }
+  .favbody { overflow:hidden; max-height:0; transition:max-height .3s ease; }
+  .favbody.open { max-height:400px; padding-bottom:8px; }
   .preset { display:flex; align-items:center; gap:8px; padding:7px 0; border-bottom:1px dashed var(--line); }
-  .preset:last-of-type { border-bottom:none; }
   .preset .star { font-size:1.2em; cursor:pointer; color:var(--line); user-select:none; }
   .preset .star.on { color:var(--gold); }
   .preset .pname { flex:1; min-width:0; font-family:inherit; font-size:.95em; font-weight:700;
     color:var(--ink); background:var(--cream); border:1px solid var(--line); border-radius:7px; padding:7px 9px; }
-  .preset .apply { font-family:inherit; font-size:.8em; font-weight:700; color:#fff;
-    background:var(--brass); border:none; border-radius:7px; padding:7px 11px; cursor:pointer; white-space:nowrap; }
-  .preset .save { font-size:1em; background:none; border:1px solid var(--brass); color:var(--brass);
-    border-radius:7px; padding:6px 9px; cursor:pointer; }
-  .pfoot { font-size:.72em; font-style:italic; color:var(--brass); opacity:.8; margin-top:8px; }
+  .preset .iconbtn { font-size:1em; background:none; border:1px solid var(--brass); color:var(--brass);
+    border-radius:7px; padding:6px 9px; cursor:pointer; line-height:1; }
+  .pfoot { font-size:.72em; font-style:italic; color:var(--brass); opacity:.85; margin-top:8px; line-height:1.5; }
   .frow { display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin-bottom:8px; }
   .frow:last-child { margin-bottom:0; }
   .flabel { font-size:.72em; text-transform:uppercase; letter-spacing:.5px;
@@ -128,7 +133,7 @@
 </head>
 <body>
   <span id="top"></span>
-  <div class="toast" id="scanToast">🕰️ Dernier scan : 19/06/2026 à 08:00</div>
+  <div class="toast" id="scanToast">🕰️ Dernier scan : 19/06/2026 à 08:25</div>
   <div class="install" id="installBar">
     <span>📲 <b>Installer l'app</b> The Watch Hunters sur ton écran d'accueil</span>
     <button type="button" class="ibtn" id="installBtn" onclick="doInstall()">Installer</button>
@@ -233,7 +238,7 @@ tick();
       <b>2373</b> affaire(s) &nbsp;·&nbsp; de <b>30€</b> à <b>19900€</b>
       &nbsp;·&nbsp; <b>203</b> modèle(s) &nbsp;·&nbsp; <b>396</b> sous le prix d'entrée
     </div>
-    <div class="scan">Scan du 19/06/2026 à 08:00 · vinted.fr · trié par prix croissant</div>
+    <div class="scan">Scan du 19/06/2026 à 08:25 · vinted.fr · trié par prix croissant</div>
   </div>
 
   <div class="filters" id="filters">
@@ -243,26 +248,31 @@ tick();
     </button>
     <div class="fbody" id="filterBody">
     <div class="presets">
-      <div class="phead">★ Mes préréglages — ⭐ = chargé à l'ouverture</div>
+      <button type="button" class="favtoggle" id="favToggle" onclick="toggleFav()">
+        <span class="lft"><span class="favstar">★</span> Recherches favorites</span>
+        <span class="favchev">▾</span>
+      </button>
+      <div class="favbody" id="favBody">
       <div class="preset">
         <span class="star" id="star0" onclick="setDefaultPreset(0)" title="Charger à l'ouverture">★</span>
         <input class="pname" id="pname0" placeholder="Recherche 1" oninput="savePresetNames()">
-        <button type="button" class="apply" onclick="applyPreset(0)">Appliquer</button>
-        <button type="button" class="save" onclick="savePreset(0)" title="Enregistrer les filtres actuels ici">💾</button>
+        <button type="button" class="iconbtn" onclick="applyPreset(0)" title="Appliquer">▶</button>
+        <button type="button" class="iconbtn" onclick="savePreset(0)" title="Enregistrer les filtres actuels ici">💾</button>
       </div>
       <div class="preset">
         <span class="star" id="star1" onclick="setDefaultPreset(1)" title="Charger à l'ouverture">★</span>
         <input class="pname" id="pname1" placeholder="Recherche 2" oninput="savePresetNames()">
-        <button type="button" class="apply" onclick="applyPreset(1)">Appliquer</button>
-        <button type="button" class="save" onclick="savePreset(1)" title="Enregistrer les filtres actuels ici">💾</button>
+        <button type="button" class="iconbtn" onclick="applyPreset(1)" title="Appliquer">▶</button>
+        <button type="button" class="iconbtn" onclick="savePreset(1)" title="Enregistrer les filtres actuels ici">💾</button>
       </div>
       <div class="preset">
         <span class="star" id="star2" onclick="setDefaultPreset(2)" title="Charger à l'ouverture">★</span>
         <input class="pname" id="pname2" placeholder="Recherche 3" oninput="savePresetNames()">
-        <button type="button" class="apply" onclick="applyPreset(2)">Appliquer</button>
-        <button type="button" class="save" onclick="savePreset(2)" title="Enregistrer les filtres actuels ici">💾</button>
+        <button type="button" class="iconbtn" onclick="applyPreset(2)" title="Appliquer">▶</button>
+        <button type="button" class="iconbtn" onclick="savePreset(2)" title="Enregistrer les filtres actuels ici">💾</button>
       </div>
-      <div class="pfoot">💾 enregistre les filtres ci-dessous dans le préréglage · ⭐ choisit celui chargé à l'ouverture</div>
+      <div class="pfoot">▶ applique le préréglage · 💾 enregistre les filtres actuels dans le préréglage · ⭐ choisit celui chargé à l'ouverture</div>
+      </div>
     </div>
     <div class="frow">
       <span class="flabel">Période</span>
@@ -409,6 +419,15 @@ function toggleFilters(forceOpen) {
 function openFilters() {
   toggleFilters(true);
   document.getElementById("filters").scrollIntoView({behavior:"smooth", block:"start"});
+}
+
+// Section "Recherches favorites" repliable (repliée par défaut)
+function toggleFav() {
+  var body = document.getElementById("favBody");
+  var tog = document.getElementById("favToggle");
+  var open = !body.classList.contains("open");
+  body.classList.toggle("open", open);
+  tog.classList.toggle("open", open);
 }
 
 // ─── Préréglages de filtres (stockés sur l'appareil via localStorage) ───
